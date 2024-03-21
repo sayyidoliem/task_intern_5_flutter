@@ -24,9 +24,15 @@ class CardDashboard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(4, 131, 141, 0.242)),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(4, 131, 141, 0.242)),
               ),
-              Text(subTitle)
+              Text(
+                subTitle,
+                maxLines: 8,
+                overflow: TextOverflow.fade,
+              )
             ],
           ),
         ),
