@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  //TODO remove unused parameter
   final api = LoginService();
 
   bool isVisible = false;
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO no needed this anymore after using context.read()
     LoginCubit myLoginBloc = LoginCubit();
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset('assets/login.jpg')),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  // TODO Add typography for textfield
                   child: TextFormField(
                     cursorRadius: const Radius.circular(24.0),
                     controller: _userNameController,
@@ -70,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  // TODO Add typography for textfield
                   child: TextFormField(
                     cursorRadius: const Radius.circular(24.0),
                     controller: _passwordController,
@@ -97,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: (!isVisible) ? false : true,
                   ),
                 ),
+                // TODO use sizedbox for spacing between widgets
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 56.0),
@@ -105,20 +110,24 @@ class _LoginPageState extends State<LoginPage> {
                     child: BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
                         if (state is LoginLoading) {
-                          return const Center(child: CircularProgressIndicator(color: Colors.amber,));
+                          return const Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.amber,
+                          ));
                         }
+                        //TODO fix the button size, see the figma again
                         return ElevatedButton(
                           onPressed: () {
                             if (_userNameController.text.isEmpty) {
+                              //TODO Use toast package for showing the error
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Please enter your username'),
                                   backgroundColor: Colors.red,
                                 ),
                               );
-                            }
-
-                            if (_passwordController.text.isEmpty) {
+                            } else if (_passwordController.text.isEmpty) {
+                              //TODO Use toast package for showing the error
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Please enter your password'),
@@ -127,16 +136,19 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
 
+                            // TODO use context.read()
                             myLoginBloc.onLoginSuccess(_userNameController.text,
                                 _passwordController.text, context);
 
+                            //TODO no needed setState anymore
                             setState(() {});
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)),
                             elevation: 0.25,
-                            backgroundColor: const Color.fromRGBO(36, 120, 129, 1),
+                            backgroundColor:
+                                const Color.fromRGBO(36, 120, 129, 1),
                           ),
                           child: const Text(
                             "LOGIN",

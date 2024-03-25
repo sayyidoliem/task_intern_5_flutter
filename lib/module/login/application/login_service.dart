@@ -8,6 +8,7 @@ class LoginService implements LoginRepositories {
     try {
       Dio dio = Dio();
       Response response = await dio.post(loginUrl,
+      //TODO the email and password not in queryparam but in body json, fix it again
           queryParameters: {'email': emailValue, 'password': passwordValue});
       print('Login Response Data: ${response.data}');
       print('Status message: ${response.data['status']}');

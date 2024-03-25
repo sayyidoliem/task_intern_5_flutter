@@ -10,9 +10,11 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    //TODO implement this code in initState widget and using context.read()
     DashboardCubit myDashboardBloc = DashboardCubit(DashboardService())
       ..onDashboardLoaded();
     return BlocBuilder<DashboardCubit, DashboardState>(
+      // TODO no needed bloc params anymore
       bloc: myDashboardBloc,
       builder: (context, state) {
         if (state is DashBoardLoading) {

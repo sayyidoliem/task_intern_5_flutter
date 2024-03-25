@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
               future: UserStorage.getUser(),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
+                  // TODO Put user from login response to this section
                   return const Text('User',
                       style: TextStyle(fontWeight: FontWeight.bold));
                 } else {
@@ -60,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       return const Text('-',
                           style: TextStyle(fontWeight: FontWeight.bold));
                     } else {
+                      //TODO the phone result is empty, cek the response again
                       return Text(snapshot.data,
                           style: Theme.of(context).textTheme.titleLarge!);
                     }
