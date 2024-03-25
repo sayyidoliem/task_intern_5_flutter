@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    LoginCubit myLoginBloc = LoginCubit();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -101,53 +102,48 @@ class _LoginPageState extends State<LoginPage> {
                       horizontal: 16.0, vertical: 56.0),
                   child: SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_userNameController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              showCloseIcon: true,
-                              content: Text('Please enter your username'),
-                              backgroundColor: Colors.red,
-                              elevation: 10,
-                              behavior: SnackBarBehavior.floating,
-                              margin: EdgeInsets.all(10),
-                            ),
-                          );
+                    child: BlocBuilder<LoginCubit, LoginState>(
+                      builder: (context, state) {
+                        if (state is LoginLoading) {
+                          return const Center(child: CircularProgressIndicator(color: Colors.amber,));
                         }
-                        if (_passwordController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              showCloseIcon: true,
-                              content: Text('Please enter your password'),
-                              backgroundColor: Colors.red,
-                              elevation: 10,
-                              behavior: SnackBarBehavior.floating,
-                              margin: EdgeInsets.all(10),
-                            ),
-                          );
-                        }
-                        //TODO Implement this service using cubit
-                        final result = await LoginService().login(
-                            _userNameController.text, _passwordController.text);
-                        if (result == true) {
-                          // showDialog(context: context, builder: (context) => const CircularProgressIndicator(),);
-                          Stack(
-                              children: <Widget>[CircularProgressIndicator()]);
-                          const CircularProgressIndicator();
-                          await Future.delayed(const Duration(seconds: 3));
-                          Navigator.pushNamed(context, RouteName.dashboard);
-                        }
-                        setState(() {});
+                        return ElevatedButton(
+                          onPressed: () {
+                            if (_userNameController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please enter your username'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+
+                            if (_passwordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please enter your password'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+
+                            myLoginBloc.onLoginSuccess(_userNameController.text,
+                                _passwordController.text, context);
+
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            elevation: 0.25,
+                            backgroundColor: const Color.fromRGBO(36, 120, 129, 1),
+                          ),
+                          child: const Text(
+                            "LOGIN",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
                       },
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(
-                            Color.fromRGBO(36, 120, 129, 1)),
-                      ),
-                      child: const Text(
-                        "LOGIN",
-                        style: TextStyle(color: Colors.white),
-                      ),
                     ),
                   ),
                 )
