@@ -8,7 +8,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
   @override
   Widget build(BuildContext context) {
     DashboardCubit myDashboardBloc = DashboardCubit(DashboardService())
@@ -17,7 +16,7 @@ class _DashboardPageState extends State<DashboardPage> {
       bloc: myDashboardBloc,
       builder: (context, state) {
         if (state is DashBoardLoading) {
-          return const CircularProgressIndicator();
+          return const Scaffold(body: DashboardLoadingPage());
         }
         if (state is DashBoardSuccess) {
           final articleData = state.articleList;
@@ -39,7 +38,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: Text(
                               snapshot.data!,
                               overflow: TextOverflow.clip,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           );
                         }
@@ -57,8 +57,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
               body: Column(
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
+                    flex: 1,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.all(14.0),
@@ -68,70 +70,12 @@ class _DashboardPageState extends State<DashboardPage> {
                             title: articleResult.title,
                             subTitle: articleResult.content);
                       },
+                      itemCount: articleData.length,
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        final articleResult = articleData[index];
-                        DateTime date =
-                                DateTime.parse(articleResult.created!.date);
-                            // String formattedDate =
-                            //     DateFormat('d MMMM yyyy, HH:mm:ss').format(date);
-                            String formattedDate = '${date.day} ${date.month} ${date.year}';
-                        return Card(
-                          color: const Color.fromRGBO(0, 238, 255, 0.149),
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 14.0, vertical: 8.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  leading: SizedBox(
-                                        height: 80,
-                                        width: 80,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(8),
-                                          child: Image.network(
-                                            articleResult.image,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                  title: Text(
-                                    articleResult.title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24.0),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 8.0,
-                                ),
-                                Text(
-                                  articleResult.content,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                   formattedDate,
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    flex: 2,
+                    child: CardDashboardArticle(articleData: articleData),
                   )
                 ],
               ),
