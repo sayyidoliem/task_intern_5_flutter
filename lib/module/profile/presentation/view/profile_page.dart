@@ -25,14 +25,14 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             FutureBuilder(
               future: UserStorage.getUser(),
-              builder: (context, snapshot) {
+              builder: (context, AsyncSnapshot snapshot) {
+                // TODO Put user from login response to this section
                 if (snapshot.data == null) {
-                  // TODO Put user from login response to this section
-                  return const Text('User',
+                  return const Text('-',
                       style: TextStyle(fontWeight: FontWeight.bold));
                 } else {
                   return Text(
-                    snapshot.data!,
+                    snapshot.data,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!
@@ -62,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyle(fontWeight: FontWeight.bold));
                     } else {
                       //TODO the phone result is empty, cek the response again
+                      //done
                       return Text(snapshot.data,
                           style: Theme.of(context).textTheme.titleLarge!);
                     }
@@ -107,6 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
           child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, RouteName.login);
+              UserStorage.clear();
+              Status.setLoginStatus(false);
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

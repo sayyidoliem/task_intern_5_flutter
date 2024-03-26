@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:task_intern_5_flutter/import.dart';
 
 part 'login_state.dart';
@@ -27,7 +25,11 @@ class LoginCubit extends Cubit<LoginState> {
       if (result == true && username.isNotEmpty && password.isNotEmpty) {
         await Future.delayed(const Duration(seconds: 3));
         emit(LoginSuccess());
-        await Navigator.pushNamed(context, RouteName.dashboard);
+        await Status.setLoginStatus(true);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardPage()),
+        );
         return onLoginSuccess(username, password, context);
       } else {
         emit(LoginLoading());

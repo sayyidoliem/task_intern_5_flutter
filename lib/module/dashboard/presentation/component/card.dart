@@ -25,23 +25,30 @@ class CardDashboard extends StatelessWidget {
         child: Column(
           children: [
             // TODO fix the typography
+            //done
             Text(
               title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Color.fromRGBO(4, 131, 141, 1)),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromRGBO(4, 131, 141, 1)),
             ),
             const SizedBox(
               height: 4,
             ),
             // TODO add the typography
+            //done
             Text(
               subTitle,
               maxLines: 6,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
             )
           ],
         ),
@@ -64,13 +71,14 @@ class CardDashboardArticle extends StatelessWidget {
       itemBuilder: (context, index) {
         final articleResult = articleData[index];
         DateTime date = DateTime.parse(articleResult.created!.date);
-        // String formattedDate =
-        //     DateFormat('d MMMM yyyy, HH:mm:ss').format(date);
-        String formattedDate = '${date.day} ${date.month} ${date.year}';
+        var idMonth = date.month - 1;
+        String formattedDate =
+            '${date.day} ${month[idMonth]} ${date.year}, ${date.hour}:${date.minute}:${date.second}';
         return Card(
           color: const Color.fromRGBO(0, 238, 255, 0.149),
           //TODO Fix the space
-          margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+          //done
+          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -91,8 +99,10 @@ class CardDashboardArticle extends StatelessWidget {
                   title: Text(
                     articleResult.title.toUpperCase(),
                     style: const TextStyle(
-                      // TODO fontweight not bold see in figma again
-                        fontWeight: FontWeight.bold, fontSize: 16.0),
+                        // TODO fontweight not bold see in figma again
+                        //done
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0),
                   ),
                 ),
                 const SizedBox(
@@ -111,6 +121,7 @@ class CardDashboardArticle extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     //TODO fix the formatdate
+                    //done
                     formattedDate,
                     style: const TextStyle(fontSize: 16.0),
                   ),
