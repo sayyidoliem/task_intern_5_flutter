@@ -121,64 +121,114 @@ class _LoginPageState extends State<LoginPage> {
                 // TODO use sizedbox for spacing between widgets
                 //done
                 const SizedBox(height: 56.0),
-                SizedBox(
-                  width: 322.0,
-                  height: 56.0,
-                  child: BlocBuilder<LoginCubit, LoginState>(
-                    builder: (context, state) {
-                      if (state is LoginLoading) {
-                        return const Center(
-                            child: CircularProgressIndicator(
-                          color: Colors.amber,
-                        ));
-                      }
-                      //TODO fix the button size, see the figma again
-                      //done
-                      return ElevatedButton(
-                        onPressed: () {
-                          if (_userNameController.text.isEmpty) {
-                            //TODO Use toast package for showing the error
-                            //done
-                            fToast.showToast(
-                              child: const ToastContent(message: 'Username'),
-                              gravity: ToastGravity.CENTER,
-                              toastDuration: const Duration(seconds: 2),
-                            );
-                          } else if (_passwordController.text.isEmpty) {
-                            //TODO Use toast package for showing the error
-                            //done
-                            fToast.showToast(
-                              child: const ToastContent(message: 'Password'),
-                              gravity: ToastGravity.CENTER,
-                              toastDuration: const Duration(seconds: 2),
-                            );
-                          }
-
-                          // TODO use context.read()
-                          //done
-                          context.read<LoginCubit>().onLoginSuccess(
-                              _userNameController.text,
-                              _passwordController.text,
-                              context);
-
-                          //TODO no needed setState anymore
-                          //done
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          elevation: 0.25,
-                          backgroundColor:
-                              const Color.fromRGBO(36, 120, 129, 1),
-                        ),
-                        child: const Text(
-                          "LOGIN",
-                          style: TextStyle(color: Colors.white),
+                //* Other method using BlocListener
+                BlocListener<LoginCubit, LoginState>(
+                  listener: (context, state) {
+                    if (state is LoginLoading) {
+                      showDialog(
+                        context: context,
+                        builder: (_) => const Center(
+                          child: CircularProgressIndicator(),
                         ),
                       );
-                    },
+                    }
+                    if (state is LoginSuccess) {
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DashboardPage()),
+                      );
+                    }
+                    if (state is LoginError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error Login'),
+                        ),
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(double.maxFinite, 56),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        elevation: 0.25,
+                        backgroundColor: const Color.fromRGBO(36, 120, 129, 1),
+                      ),
+                      onPressed: () {
+                        context.read<LoginCubit>().onLoginSuccess(
+                            _userNameController.text,
+                            _passwordController.text,
+                            context);
+                      },
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
-                )
+                ),
+                // SizedBox(
+                //   width: 322.0,
+                //   height: 56.0,
+                //   child: BlocBuilder<LoginCubit, LoginState>(
+                //     builder: (context, state) {
+                //       if (state is LoginLoading) {
+                //         return const Center(
+                //             child: CircularProgressIndicator(
+                //           color: Colors.amber,
+                //         ));
+                //       }
+                //       //TODO fix the button size, see the figma again
+                //       //done
+                //       return ElevatedButton(
+                //         onPressed: () {
+                //           if (_userNameController.text.isEmpty) {
+                //             //TODO Use toast package for showing the error
+                //             //done
+                //             fToast.showToast(
+                //               child: const ToastContent(message: 'Username'),
+                //               gravity: ToastGravity.CENTER,
+                //               toastDuration: const Duration(seconds: 2),
+                //             );
+                //           } else if (_passwordController.text.isEmpty) {
+                //             //TODO Use toast package for showing the error
+                //             //done
+                //             fToast.showToast(
+                //               child: const ToastContent(message: 'Password'),
+                //               gravity: ToastGravity.CENTER,
+                //               toastDuration: const Duration(seconds: 2),
+                //             );
+                //           }
+
+                //           // TODO use context.read()
+                //           //done
+                //           context.read<LoginCubit>().onLoginSuccess(
+                //               _userNameController.text,
+                //               _passwordController.text,
+                //               context);
+
+                //           //TODO no needed setState anymore
+                //           //done
+                //         },
+                //         style: ElevatedButton.styleFrom(
+                //           shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(8)),
+                //           elevation: 0.25,
+                //           backgroundColor:
+                //               const Color.fromRGBO(36, 120, 129, 1),
+                //         ),
+                //         child: const Text(
+                //           "LOGIN",
+                //           style: TextStyle(color: Colors.white),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // )
               ],
             ),
           ),

@@ -24,13 +24,13 @@ class LoginCubit extends Cubit<LoginState> {
       final result = await LoginService().login(username, password);
       if (result == true && username.isNotEmpty && password.isNotEmpty) {
         await Future.delayed(const Duration(seconds: 3));
-        emit(LoginSuccess());
         await Status.setLoginStatus(true);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
-        return onLoginSuccess(username, password, context);
+        emit(LoginSuccess());
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const DashboardPage()),
+        // );
+        // return onLoginSuccess(username, password, context);
       } else {
         emit(LoginLoading());
       }

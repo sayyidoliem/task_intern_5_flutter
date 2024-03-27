@@ -107,9 +107,10 @@ class _ProfilePageState extends State<ProfilePage> {
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, RouteName.login);
+              //* INFO Put Navigator on last command after clear some storage and status
               UserStorage.clear();
               Status.setLoginStatus(false);
+              Navigator.pushNamed(context, RouteName.login);
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
