@@ -22,7 +22,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         title: 'task_intern_5_flutter',
         theme: ThemeData(useMaterial3: true),
-        initialRoute: RouteName.login,
+        initialRoute: RouteName.initial,
         onGenerateRoute: router.onRoute,
       ),
     );
